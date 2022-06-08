@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+import uuid
 # from roomDefaults import generateRoomNumber
 
 def generateRoomNumber():
@@ -15,6 +16,7 @@ def generateRoomNumber():
 # Create your models here.
 
 class RoomExtra(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     roomextra_name = models.CharField(_("Name of Extra"), max_length=50)
     roomextra_cost = models.DecimalField(_("Cost"), max_digits=5, decimal_places=2)
     roomextra_info1 = models.CharField(_("Room Extra Info"), max_length=50, blank=True, null=True)
@@ -36,6 +38,7 @@ class RoomExtra(models.Model):
 
 
 class RoomType(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     roomtype_name = models.CharField(_("Name"), max_length=50)
     roomtype_cost = models.DecimalField(_("Cost of Room/Night"), max_digits=5, decimal_places=2)
     roomtype_cost1 = models.DecimalField(_("Cost of Room/Night 1"), max_digits=5, decimal_places=2, blank=True, null=True)
@@ -56,6 +59,7 @@ class RoomType(models.Model):
 
 
 class Room(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     roomnumber = models.CharField(_("Room Number"), max_length=50, default=generateRoomNumber, db_index=True, unique=True)
     roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE)
     roomcapacity = models.PositiveIntegerField(_("Room Capacity")) #set max value for room capacity
@@ -77,6 +81,7 @@ class Room(models.Model):
 
 
 class RoomImage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     room = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
     roomimage_main = models.ImageField(_("Main Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None)
     roomimage_1 = models.ImageField(_("Room Image 1"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
@@ -91,7 +96,7 @@ class RoomImage(models.Model):
         verbose_name_plural = _("RoomImages")
 
     def __str__(self):
-        return self.room
+        return self.room.roomnumber
 
     def get_absolute_url(self):
         return reverse("RoomImage_detail", kwargs={"pk": self.pk})
