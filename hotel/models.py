@@ -56,17 +56,29 @@ class RoomType(models.Model):
     def get_absolute_url(self):
         return reverse("RoomType_detail", kwargs={"pk": self.pk})
 
+ROOMSTATUS = [
+    ('cv', 'Clean Vacant'),
+    ('co', 'Clean Occupied'),
+    ('dv', 'Dirty Vacant'),
+    ('do', 'Dirty Occupied'),
+    ('un', 'Unavailable')
+]
 
 
 class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    roomstatus = models.CharField(_("Room Status"), max_length=2, choices=ROOMSTATUS, default='dv')
     roomnumber = models.CharField(_("Room Number"), max_length=50, default=generateRoomNumber, db_index=True, unique=True)
-    roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE)
-    roomcapacity = models.PositiveIntegerField(_("Room Capacity")) #set max value for room capacity
+    #limit_choices_to limits the availabe choices for this field/Will show only roomtypes with roomtype_active = True
+    roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE, limit_choices_to={'roomtype_active': True}, related_name='rooms') 
+    roomcapacity = models.PositiveIntegerField(_("Room Capacity")) #todo: set max value for room capacity
     roombed = models.PositiveIntegerField(_("Number of Beds"))
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
     roomextras = models.ManyToManyField(RoomExtra, verbose_name=_("List of Extra Items"))
+    roomdate = models.DateTimeField(_("Created At"), blank=True, null=True)
+
+    #todo: add a model manager to handle getting rooms according to status
     
     
     class Meta:
@@ -82,7 +94,7 @@ class Room(models.Model):
 
 class RoomImage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    room = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE, related_name='images')
     roomimage_main = models.ImageField(_("Main Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None)
     roomimage_1 = models.ImageField(_("Room Image 1"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
     roomimage_2 = models.ImageField(_("Room Image 2"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
