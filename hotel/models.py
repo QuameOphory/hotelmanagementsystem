@@ -76,13 +76,13 @@ class Room(models.Model):
 
 
 
-class RoomImage(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_(""), on_delete=models.CASCADE)
-    roomimage = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None)
-    roomimage1 = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-    roomimage2 = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-    roomimage3 = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-    roomimage4 = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
+# class RoomImage(models.Model):
+#     room = models.ForeignKey(Room, verbose_name=_(""), on_delete=models.CASCADE)
+#     roomimage = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None)
+#     # roomimage1 = models.ImageField(_("Room Image1"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
+#     # roomimage2 = models.ImageField(_("Room Image2"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
+#     # roomimage3 = models.ImageField(_("Room Image3"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
+#     # roomimage4 = models.ImageField(_("Room Image4"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
     
 
     class Meta:
