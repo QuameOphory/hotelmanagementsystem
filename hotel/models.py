@@ -62,9 +62,9 @@ class Room(models.Model):
     roombed = models.PositiveIntegerField(_("Number of Beds"))
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
+    roomextras = models.ManyToManyField(RoomExtra, verbose_name=_("List of Extra Items"))
     
     
-
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
