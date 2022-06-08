@@ -62,6 +62,7 @@ class Room(models.Model):
     roombed = models.PositiveIntegerField(_("Number of Beds"))
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
+    # roomimage = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
     
 
     class Meta:
@@ -75,14 +76,14 @@ class Room(models.Model):
         return reverse("Room_detail", kwargs={"pk": self.pk})
 
 
-
-# class RoomImage(models.Model):
-#     room = models.ForeignKey(Room, verbose_name=_(""), on_delete=models.CASCADE)
-#     roomimage = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None)
-#     # roomimage1 = models.ImageField(_("Room Image1"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-#     # roomimage2 = models.ImageField(_("Room Image2"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-#     # roomimage3 = models.ImageField(_("Room Image3"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
-#     # roomimage4 = models.ImageField(_("Room Image4"), upload_to='photos/%Y/%m/%d', height_field=None, width_field=None, max_length=None, blank=True, null=True)
+class RoomImage(models.Model):
+    room = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
+    roomimage_main = models.ImageField(_("Main Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None)
+    roomimage_1 = models.ImageField(_("Room Image 1"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    roomimage_2 = models.ImageField(_("Room Image 2"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    roomimage_3 = models.ImageField(_("Room Image 3"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    roomimage_4 = models.ImageField(_("Room Image 4"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    roomimage_5 = models.ImageField(_("Room Image 5"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
     
 
     class Meta:
@@ -90,8 +91,9 @@ class Room(models.Model):
         verbose_name_plural = _("RoomImages")
 
     def __str__(self):
-        return self.room
+        return self.name
 
     def get_absolute_url(self):
         return reverse("RoomImage_detail", kwargs={"pk": self.pk})
+
 
