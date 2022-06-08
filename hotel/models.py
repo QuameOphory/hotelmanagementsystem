@@ -62,7 +62,7 @@ class Room(models.Model):
     roombed = models.PositiveIntegerField(_("Number of Beds"))
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
-    # roomimage = models.ImageField(_("Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    
     
 
     class Meta:
@@ -91,7 +91,7 @@ class RoomImage(models.Model):
         verbose_name_plural = _("RoomImages")
 
     def __str__(self):
-        return self.name
+        return self.room
 
     def get_absolute_url(self):
         return reverse("RoomImage_detail", kwargs={"pk": self.pk})
