@@ -6,3 +6,5 @@ from .models import Room
 
 class RoomListView(generic.ListView):
     model = Room
+    template_name = 'rooms/homelist.html'
+    context_object_name = 'rooms'
