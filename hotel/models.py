@@ -89,7 +89,7 @@ class Room(models.Model):
         return self.roomnumber
 
     def get_absolute_url(self):
-        return reverse("Room_detail", kwargs={"pk": self.pk})
+        return reverse("room_detail", kwargs={"pk": self.roomnumber})
 
 
 class RoomImage(models.Model):
