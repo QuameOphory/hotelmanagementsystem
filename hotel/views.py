@@ -26,7 +26,6 @@ class RoomCreateView(generic.CreateView):
             room = form.save()
             room.save()
             return HttpResponsePermanentRedirect(self.get_success_url())
-        return False
 
 
 class RoomDetailView(generic.DetailView):

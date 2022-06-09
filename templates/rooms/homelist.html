@@ -6,7 +6,7 @@ Rooms Page
 
 
 {% block content %}
-    <table class="roomlisttable">
+    {% comment %} <table class="roomlisttable">
         <thead>
             <tr>
                 <th>#</th>
@@ -33,5 +33,25 @@ Rooms Page
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> {% endcomment %}
+    <div class="row">
+        {% for room in rooms %}
+            <div class="col-sm-6">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ room.roomnumber }}</h5>
+                        <p class="card-text">
+                            <ul class="extras">
+                                {% for extra in room.roomextra_set.all %}
+                                    <li class="extraitem">{{ extra.roomextra_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </p>
+                        <a href="{% url 'room_detail' room.roomnumber %}" class="btn btn-dark">View Room</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}
