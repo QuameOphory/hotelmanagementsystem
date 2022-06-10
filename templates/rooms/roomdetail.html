@@ -72,5 +72,6 @@
     </div>
     <div class="room-list">
         <a href="{% url 'room_list' %}"><button class="btn btn-primary">View All Rooms</button></a>
+        <a href="{% url 'room_delete' room.roomnumber_url %}"><button class="btn btn-danger">Delete Room</button></a>
     </div>
 {% endblock content %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1 class="delete-header">Are you sure you want to delete this room?</h1>
+<form method="post">
+    {% csrf_token %}
+    <input class="btn btn-danger" type="submit" value="Confirm">
+</form>
+<a href="{% url 'room_detail' room.roomnumber_url %}"><button class="btn btn-primary">Cancel</button></a>
+
+{% endblock content %}

@@ -1,5 +1,5 @@
 from gc import get_objects
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render
 from django.views import generic
 from .models import Room
@@ -35,6 +35,13 @@ class RoomDetailView(generic.DetailView):
     slug_field = 'roomnumber_url'
     context_object_name = 'room'
     template_name = 'rooms/roomdetail.html'
+
+
+class RoomDeleteView(generic.DeleteView):
+    model = Room
+    slug_field = 'roomnumber_url'
+    context_object_name = 'room'
+    success_url = reverse_lazy('room_list')
 
     
     
