@@ -1,3 +1,5 @@
+from gc import get_objects
+from django.urls import reverse
 from django.shortcuts import render
 from django.views import generic
 from .models import Room
@@ -25,11 +27,13 @@ class RoomCreateView(generic.CreateView):
         if form.is_valid():
             room = form.save()
             room.save()
-            return HttpResponsePermanentRedirect(self.get_success_url())
+            return HttpResponsePermanentRedirect(reverse('room_detail', kwargs={'roomnumber': room.roomnumber}))
 
 
 class RoomDetailView(generic.DetailView):
     model = Room
+    slug_field = 'roomnumber_url'
     template_name = 'rooms/roomdetail.html'
 
-
+    
+    

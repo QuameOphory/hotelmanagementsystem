@@ -43,12 +43,12 @@ Rooms Page
                         <h5 class="card-title">{{ room.roomnumber }}</h5>
                         <p class="card-text">
                             <ul class="extras">
-                                {% for extra in room.roomextra_set.all %}
+                                {% for extra in room.roomextras_set.all %}
                                     <li class="extraitem">{{ extra.roomextra_name }}</li>
                                 {% endfor %}
                             </ul>
                         </p>
-                        <a href="{% url 'room_detail' room.roomnumber %}" class="btn btn-dark">View Room</a>
+                        <a href="{% url 'room_detail' room.roomnumber_url %}" class="btn btn-dark">View Room</a>
                     </div>
                 </div>
             </div>

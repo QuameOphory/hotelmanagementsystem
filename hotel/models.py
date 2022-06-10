@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.utils.text import slugify
 # from roomDefaults import generateRoomNumber
 
 def generateRoomNumber():
@@ -69,6 +70,7 @@ class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     roomstatus = models.CharField(_("Room Status"), max_length=2, choices=ROOMSTATUS, default='dv')
     roomnumber = models.CharField(_("Room Number"), max_length=50, default=generateRoomNumber, db_index=True, unique=True)
+    roomnumber_url = models.SlugField(_("Room Number URL"), null=True)
     #limit_choices_to limits the availabe choices for this field/Will show only roomtypes with roomtype_active = True
     roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE, limit_choices_to={'roomtype_active': True}, related_name='rooms') 
     roomcapacity = models.PositiveIntegerField(_("Room Capacity")) #todo: set max value for room capacity
@@ -84,12 +86,20 @@ class Room(models.Model):
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
+        # unique_together = ['roomnumber',]
 
     def __str__(self):
         return self.roomnumber
 
+
+
     def get_absolute_url(self):
-        return reverse("room_detail", kwargs={"roomnumber": self.roomnumber})
+        return reverse("room_detail", kwargs={"roomnumber": self.roomnumber_url})
+
+    def save(self, *args, **kwargs):
+        if not self.roomnumber_url:
+            self.roomnumber_url = slugify(self.roomnumber)
+        return super(Room, self).save(*args, **kwargs)
 
 
 class RoomImage(models.Model):
