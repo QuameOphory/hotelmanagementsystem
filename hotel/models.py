@@ -91,10 +91,8 @@ class Room(models.Model):
     def __str__(self):
         return self.roomnumber
 
-
-
     def get_absolute_url(self):
-        return reverse("room_detail", kwargs={"roomnumber": self.roomnumber_url})
+        return reverse("room_detail", kwargs={"slug": self.roomnumber_url})
 
     def save(self, *args, **kwargs):
         if not self.roomnumber_url:

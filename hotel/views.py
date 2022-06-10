@@ -27,12 +27,13 @@ class RoomCreateView(generic.CreateView):
         if form.is_valid():
             room = form.save()
             room.save()
-            return HttpResponsePermanentRedirect(reverse('room_detail', kwargs={'roomnumber': room.roomnumber}))
+            return HttpResponsePermanentRedirect(reverse('room_detail', kwargs={'slug': room.roomnumber_url}))
 
 
 class RoomDetailView(generic.DetailView):
     model = Room
     slug_field = 'roomnumber_url'
+    context_object_name = 'room'
     template_name = 'rooms/roomdetail.html'
 
     
