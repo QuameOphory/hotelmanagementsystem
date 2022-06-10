@@ -33,7 +33,10 @@ Rooms Page
                 </tr>
             {% endfor %}
         </tbody>
-    </table> {% endcomment %}
+    </table> 
+    {% endcomment %}
+
+    <!-- list of rooms -->
     <div class="row">
         {% for room in rooms %}
             <div class="col-sm-6">
@@ -53,5 +56,9 @@ Rooms Page
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+    <div class="create-room">
+        <a href="{% url 'room_create' %}"><button class="btn btn-primary">Create Room</button></a>
     </div>
 {% endblock content %}

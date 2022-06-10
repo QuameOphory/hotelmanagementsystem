@@ -11,3 +11,15 @@
 .btn{
     margin-top: 8px;
 }
+
+.table>:not(caption)>*>*{
+    padding: 7px 7px;
+}
+
+/* th{
+    text-align: right;
+} */
+
+table{
+    width: 70px;
+}
