@@ -1,15 +1,24 @@
+from itertools import count
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 import uuid
 from django.utils.text import slugify
+from django.utils import timezone
+import re
 # from roomDefaults import generateRoomNumber
 
 def generateRoomNumber():
     try:
-        appendix = 'R000'
-        rooms = Room.objects.all().count() + 1
-        return appendix + str(rooms)
+        firstroom = 'R000000001'
+        totalrooms = Room.objects.all().count()
+        if totalrooms == 0:
+            return firstroom
+        else:
+            lastroom = Room.objects.order_by('created_at')[0]
+            roomindex = int(''.join(re.findall('[0-9]', lastroom)))
+            print(f'----------------\n{lastroom}')
+            return lastroom.roomnumber
     except Exception as e:
         print(f'an error occured \n{e}')
 
@@ -61,8 +70,7 @@ ROOMSTATUS = [
     ('cv', 'Clean Vacant'),
     ('co', 'Clean Occupied'),
     ('dv', 'Dirty Vacant'),
-    ('do', 'Dirty Occupied'),
-    ('un', 'Unavailable')
+    ('do', 'Dirty Occupied')
 ]
 
 
@@ -78,7 +86,9 @@ class Room(models.Model):
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
     roomextras = models.ManyToManyField(RoomExtra, verbose_name=_("List of Extra Items"))
-    roomdate = models.DateTimeField(_("Created At"), blank=True, null=True)
+    created_at = models.DateTimeField(_("Created At"), default=timezone.now)
+    is_available = models.BooleanField(_("Room Available"), default=True)
+    roomdate = models.DateTimeField(_("Empty Date Field"), blank=True, null=True)
 
     #todo: add a model manager to handle getting rooms according to status
     

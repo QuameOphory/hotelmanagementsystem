@@ -13,7 +13,7 @@ admin.site.register(RoomImage)
 class RoomAdmin(admin.ModelAdmin):
     '''Admin View for Room'''
 
-    list_display = ('roomstatus', 'roomnumber', 'roomtype', 'roomcapacity', 'roomdimension', 'roomnumber_url')
+    list_display = ('roomnumber', 'roomtype', 'roomcapacity', 'roomdimension', 'created_at', 'is_available', 'roomstatus')
     list_filter = ('roomnumber',)
     # inlines = [
     #     Inline,
