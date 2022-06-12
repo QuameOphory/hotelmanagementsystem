@@ -6,6 +6,9 @@ import uuid
 from django.utils.text import slugify
 from django.utils import timezone
 import re
+from pathlib import Path
+from uuid import uuid1
+from datetime import date
 # from roomDefaults import generateRoomNumber
 
 def generateRoomNumber():
@@ -110,15 +113,21 @@ class Room(models.Model):
         return super(Room, self).save(*args, **kwargs)
 
 
+def room_image_upload_handler(instance, filename):
+    fpath = Path(filename)
+    newfilename = str(uuid1())
+    return f'photos/rooms/{date.today().year}/{date.today().month}/{date.today().day}/{newfilename}{fpath.suffix}'
+
+
 class RoomImage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     room = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE, related_name='images')
-    roomimage_main = models.ImageField(_("Main Room Image"), upload_to='photos/%Y/%m/%d/', max_length=None)
-    roomimage_1 = models.ImageField(_("Room Image 1"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
-    roomimage_2 = models.ImageField(_("Room Image 2"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
-    roomimage_3 = models.ImageField(_("Room Image 3"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
-    roomimage_4 = models.ImageField(_("Room Image 4"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
-    roomimage_5 = models.ImageField(_("Room Image 5"), upload_to='photos/%Y/%m/%d/', max_length=None, blank=True, null=True)
+    roomimage_main = models.ImageField(_("Main Room Image"), upload_to=room_image_upload_handler, max_length=None)
+    roomimage_1 = models.ImageField(_("Room Image 1"), upload_to=room_image_upload_handler, max_length=None, blank=True, null=True)
+    roomimage_2 = models.ImageField(_("Room Image 2"), upload_to=room_image_upload_handler, max_length=None, blank=True, null=True)
+    roomimage_3 = models.ImageField(_("Room Image 3"), upload_to=room_image_upload_handler, max_length=None, blank=True, null=True)
+    roomimage_4 = models.ImageField(_("Room Image 4"), upload_to=room_image_upload_handler, max_length=None, blank=True, null=True)
+    roomimage_5 = models.ImageField(_("Room Image 5"), upload_to=room_image_upload_handler, max_length=None, blank=True, null=True)
     
 
     class Meta:
