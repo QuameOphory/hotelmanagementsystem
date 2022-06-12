@@ -1,0 +1,10 @@
+{% extends 'extras/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-dark">Update Room Details</button>
+    </form>
+{% endblock content %}

@@ -44,4 +44,9 @@ class RoomDeleteView(generic.DeleteView):
     success_url = reverse_lazy('room_list')
 
     
-    
+class RoomUpdateView(generic.UpdateView):
+    model = Room
+    fields = ('roomtype', 'roomnumber', 'roomstatus', 'roomcapacity', 'roombed', 'roombath', 'roomdimension', 'roomextras', 'is_available')
+    slug_field = 'roomnumber_url'
+    context_object_name = 'room'
+    template_name = 'rooms/roomupdate.html'

@@ -100,10 +100,10 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse("room_detail", kwargs={"slug": self.roomnumber_url})
 
-    def save(self, *args, **kwargs):
-        # if not self.roomnumber_url:
-        #     self.roomnumber_url = slugify(self.roomnumber)
-        return super(Room, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     # if not self.roomnumber_url:
+    #     #     self.roomnumber_url = slugify(self.roomnumber)
+    #     return super(Room, self).save(*args, **kwargs)
 
 def room_pre_save(sender, instance, *args, **kwargs):
     if instance.roomnumber_url is None:
