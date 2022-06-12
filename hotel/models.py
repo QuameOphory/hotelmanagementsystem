@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from datetime import date
 from number_generator import generate_number
-# from roomDefaults import generateRoomNumber
+from django.db.models.signals import post_save, pre_save
 
 def generateRoomNumber():
     rooms = Room.objects.all().order_by('-created_at')
@@ -81,7 +81,8 @@ class Room(models.Model):
     roombath = models.PositiveIntegerField(_("Number of Bath"))
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
     roomextras = models.ManyToManyField(RoomExtra, verbose_name=_("List of Extra Items"))
-    created_at = models.DateTimeField(_("Created At"), default=timezone.now)
+    created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
+    last_updated = models.DateTimeField(_("Updated At"), auto_now=False)
     is_available = models.BooleanField(_("Room Available"), default=True)
     roomdate = models.DateTimeField(_("Empty Date Field"), blank=True, null=True)
 
@@ -100,9 +101,15 @@ class Room(models.Model):
         return reverse("room_detail", kwargs={"slug": self.roomnumber_url})
 
     def save(self, *args, **kwargs):
-        if not self.roomnumber_url:
-            self.roomnumber_url = slugify(self.roomnumber)
+        # if not self.roomnumber_url:
+        #     self.roomnumber_url = slugify(self.roomnumber)
         return super(Room, self).save(*args, **kwargs)
+
+def room_pre_save(sender, instance, *args, **kwargs):
+    if instance.roomnumber_url is None:
+        instance.roomnumber_url = slugify(instance.roomnumber)
+
+pre_save.connect(room_pre_save, sender=Room)
 
 
 def room_image_upload_handler(instance, filename):
