@@ -11,18 +11,6 @@ from number_generator import generate_number
 # from roomDefaults import generateRoomNumber
 
 def generateRoomNumber():
-    # try:
-    #     firstroom = 'R000000001'
-    #     totalrooms = Room.objects.all().count()
-    #     if totalrooms == 0:
-    #         return firstroom
-    #     else:
-    #         lastroom = Room.objects.order_by('created_at')[0]
-    #         roomindex = int(''.join(re.findall('[0-9]', lastroom)))
-    #         print(f'----------------\n{lastroom}')
-    #         return lastroom.roomnumber
-    # except Exception as e:
-    #     print(f'an error occured \n{e}')
     rooms = Room.objects.all().order_by('-created_at')
     return generate_number('R', rooms, length=10)
 
