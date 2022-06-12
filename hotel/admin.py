@@ -15,11 +15,7 @@ class RoomAdmin(admin.ModelAdmin):
 
     list_display = ('roomnumber', 'roomtype', 'roomcapacity', 'roomdimension', 'created_at', 'is_available', 'roomstatus')
     list_filter = ('roomnumber',)
-    # inlines = [
-    #     Inline,
-    # ]
-    # raw_id_fields = ('',)
-    # readonly_fields = ('',)
+    # readonly_fields = ('roomnumber',)
     search_fields = ('roomnumber',)
     # date_hierarchy = ''
     ordering = ('roomnumber',)
