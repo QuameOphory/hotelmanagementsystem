@@ -1,4 +1,3 @@
-from itertools import count
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -7,7 +6,6 @@ from django.utils.text import slugify
 from django.utils import timezone
 import re
 from pathlib import Path
-from uuid import uuid1
 from datetime import date
 # from roomDefaults import generateRoomNumber
 
@@ -115,7 +113,7 @@ class Room(models.Model):
 
 def room_image_upload_handler(instance, filename):
     fpath = Path(filename)
-    newfilename = str(uuid1())
+    newfilename = str(uuid.uuid4())
     return f'photos/rooms/{date.today().year}/{date.today().month}/{date.today().day}/{newfilename}{fpath.suffix}'
 
 
