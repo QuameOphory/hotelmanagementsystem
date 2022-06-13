@@ -9,20 +9,23 @@ def generate_number(prefix, qs, postfix='1', length=4):
         postfix = str(int(firstrecord.roomnumber[1:]) + 1)
         return prefix + postfix.zfill(length - len(postfix))
 
-
 def generate_number_with_date(prefix, qs, postfix='1'):
     today = date.today()
-    yy, mm, dd = str(today).split('-')
-    if len(mm) == 1:
-        mm = mm.zfill(2)
-    if len(dd) == 1:
-        dd = dd.zfill(2)
+    datepart = ''.join(today.split('-'))
     if qs.count()==0:
-        return prefix + yy + mm + dd + postfix.zfill(4)
+        numberstring = prefix + datepart + postfix.zfill(6)
+        return numberstring
     else:
-        # TODO: work on it well
         firstrecord = qs.first()
-        postfix = str(int(firstrecord.bookingnumber[7:]) + 1)
+        roomnumber, new_roomnumber = firstrecord.bookingnumber[7:], str(int(firstrecord.bookingnumber[7:]) + 1)
+        postfix = new_roomnumber.zfill(len(new_roomnumber) + (len(roomnumber) - len(new_roomnumber)))
+        numberstring = prefix + datepart + postfix
+        return numberstring
+
+
+
+
+        
         return prefix + yy[2:] + mm + dd + postfix.zfill(3)
     
         
