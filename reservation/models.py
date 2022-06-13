@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from number_generator import generate_number_with_date
 from datetime import timedelta, datetime
+from django.db.models.signals import post_save
 
 def generateBookingNumber():
     bookings = Booking.objects.all().order_by('-created_at')
@@ -50,3 +51,11 @@ class Booking(models.Model):
 
     def get_absolute_url(self):
         return reverse("booking_detail", kwargs={"pk": self.pk})
+
+def booking_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.bookingroom.roomstatus = 'co'
+        instance.bookingroom.is_available = False
+        instance.bookingroom.save()
+
+post_save.connect(booking_post_save, sender=Booking)

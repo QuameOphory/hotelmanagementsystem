@@ -61,7 +61,7 @@ ROOMSTATUS = [
     ('cv', 'Clean Vacant'),
     ('co', 'Clean Occupied'),
     ('dv', 'Dirty Vacant'),
-    ('do', 'Dirty Occupied')
+    ('do', 'Dirty Occupied'),
 ]
 
 
