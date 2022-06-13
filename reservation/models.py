@@ -15,6 +15,7 @@ def generateBookingNumber():
 # Create your models here.
 class Booking(models.Model):
     """Model definition for Booking."""
+    # TODO: add validations for past dates
     bookingnumber = models.CharField(_("Booking Number"), max_length=120, default=generateBookingNumber)
     # TODO: change user model  to client model
     bookingby = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
