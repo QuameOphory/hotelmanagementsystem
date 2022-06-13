@@ -6,36 +6,6 @@ Rooms Page
 
 
 {% block content %}
-    {% comment %} <table class="roomlisttable">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Room Status</th>
-                <th>Room Number</th>
-                <th>Room Type</th>
-                <th>Room Capacity</th>
-                <th>Room Bed</th>
-                <th>Room Bath</th>
-                <th>Room Dimension</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for room in rooms %}
-                <tr>
-                    <td>-</td>
-                    <td>{{ room.get_roomstatus_display }}</td>
-                    <td>{{ room.roomnumber }}</td>
-                    <td>{{ room.roomtype }}</td>
-                    <td>{{ room.roomcapacity }}</td>
-                    <td>{{ room.roombed }}</td>
-                    <td>{{ room.roombath }}</td>
-                    <td>{{ room.roomdimension }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table> 
-    {% endcomment %}
-
     <!-- list of rooms -->
     <div class="row">
         {% for room in rooms %}

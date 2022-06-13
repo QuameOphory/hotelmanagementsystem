@@ -11,7 +11,7 @@ def generate_number(prefix, qs, postfix='1', length=4):
 
 def generate_number_with_date(prefix, qs, postfix='1'):
     today = date.today()
-    datepart = ''.join(today.split('-'))
+    datepart = ''.join(str(today).split('-'))
     if qs.count()==0:
         numberstring = prefix + datepart + postfix.zfill(6)
         return numberstring

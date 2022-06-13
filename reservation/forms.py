@@ -9,4 +9,4 @@ class BookingForm(forms.ModelForm):
         """Meta definition for Bookingform."""
 
         model = Booking
-        fields = ('bookingfrom', 'bookingnights', 'bookingcontent')
+        fields = ('bookingby', 'bookingfrom', 'bookingnights', 'bookingcontent')

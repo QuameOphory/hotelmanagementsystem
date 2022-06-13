@@ -25,7 +25,7 @@ class Booking(models.Model):
     # is_active = models.BooleanField(_("Is Active"), default=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
-    bookingcontent = models.TextField(_("Comment"))
+    bookingcontent = models.TextField(_("Comment"), blank=True, null=True, help_text='Add any extra Information here')
 
     @property
     def bookingto(self):
@@ -45,7 +45,7 @@ class Booking(models.Model):
 
     def __str__(self):
         """Unicode representation of Booking."""
-        pass
+        return str(self.bookingfrom)
 
     def get_absolute_url(self):
         return reverse("booking_detail", kwargs={"pk": self.pk})
