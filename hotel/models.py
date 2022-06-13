@@ -10,8 +10,6 @@ from datetime import date
 from number_generator import generate_number
 from django.db.models.signals import post_save, pre_save
 
-from reservation.models import Booking
-
 def generateRoomNumber():
     rooms = Room.objects.all().order_by('-created_at')
     return generate_number('R', rooms, length=10)
