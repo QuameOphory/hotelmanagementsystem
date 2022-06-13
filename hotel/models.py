@@ -10,13 +10,11 @@ from datetime import date
 from number_generator import generate_number
 from django.db.models.signals import post_save, pre_save
 
+from reservation.models import Booking
+
 def generateRoomNumber():
     rooms = Room.objects.all().order_by('-created_at')
     return generate_number('R', rooms, length=10)
-
-
-    
-
 
 # Create your models here.
 
@@ -86,13 +84,12 @@ class Room(models.Model):
     is_available = models.BooleanField(_("Room Available"), default=True)
     roomdate = models.DateTimeField(_("Empty Date Field"), blank=True, null=True)
 
-    #todo: add a model manager to handle getting rooms according to status
+    # TODO: add a model manager to handle getting rooms according to status
     
     
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
-        # unique_together = ['roomnumber',]
 
     def __str__(self):
         return self.roomnumber
@@ -100,17 +97,11 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse("room_detail", kwargs={"slug": self.roomnumber_url})
 
-    # def save(self, *args, **kwargs):
-    #     # if not self.roomnumber_url:
-    #     #     self.roomnumber_url = slugify(self.roomnumber)
-    #     return super(Room, self).save(*args, **kwargs)
-
 def room_pre_save(sender, instance, *args, **kwargs):
     if instance.roomnumber_url is None:
         instance.roomnumber_url = slugify(instance.roomnumber)
 
 pre_save.connect(room_pre_save, sender=Room)
-
 
 def room_image_upload_handler(instance, filename):
     fpath = Path(filename)
