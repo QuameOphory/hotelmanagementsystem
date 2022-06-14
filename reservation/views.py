@@ -48,16 +48,19 @@ class BookingCreateView(generic.CreateView):
 class BookingDetailView(generic.DetailView):
     model = Booking
     context_object_name = 'booking'
+    # TODO: design booking detail html page
     template_name = 'reservations/bookingdetail.html'
 
 class BookingListView(generic.ListView):
     model = Booking
     context_object_name = 'bookings'
+    # TODO: design booking detail html page
     template_name = 'reservations/bookinglist.html'
 
 
 class TodayBookingListView(generic.ListView):
     utc = pytz.UTC
+    # TODO: design today booking detail html page
     template_name = 'reservations/todaybookinglist.html'
     context_object_name = 'todaybookings'
     today_start = datetime(date.today().year, date.today().month, date.today().day)
