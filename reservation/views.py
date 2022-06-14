@@ -72,4 +72,10 @@ class TodayBookingListView(generic.ListView):
     today_end_aware = utc.localize(today_end)
     queryset = Booking.objects.filter(bookingfrom__range=(today_start_aware, today_end_aware), bookingconfirm=True)
 
+
+# def searchView(request):
+#     fromdate = request.get('date_from')
+#     todate = request.get('to_date')
+
+
     

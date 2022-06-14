@@ -40,6 +40,10 @@ class Booking(models.Model):
             return False
         return True
 
+    @property
+    def release_room(self):
+        pass
+
     class Meta:
         """Meta definition for Booking."""
 
