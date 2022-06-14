@@ -23,3 +23,11 @@ class BookingForm(forms.ModelForm):
         if date.today() > d:
             raise forms.ValidationError(_("You can't book for days in the past."))
         return bookingdate
+
+    def clean_bookingby(self, *args, **kwargs):
+        bookingby = self.cleaned_data.get('bookingby')
+        bookings = Booking.objects.all()
+        for booking in bookings:
+            if booking.bookingby == bookingby and booking.bookingis_valid:
+                raise forms.ValidationError('This user has already made a booking')
+        return bookingby
