@@ -43,6 +43,9 @@ class BookingCreateView(generic.CreateView):
                 booking.save()
                 # return reverse('booking_detail', kwargs={"id": booking.id, "slug": booking.bookingroom.roomnumber_url})
                 return HttpResponseRedirect(reverse('booking_list'))
+            # return Http404()
+            else:
+                return render(request, self.template_name, {'form': form})
 
 
 class BookingDetailView(generic.DetailView):
