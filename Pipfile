@@ -9,6 +9,7 @@ django-dotenv = "*"
 pillow = "*"
 django-crispy-forms = "*"
 django-htmx = "*"
+pytz = "*"
 
 [dev-packages]
 

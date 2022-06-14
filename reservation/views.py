@@ -5,7 +5,9 @@ from django.views import generic
 from .models import Booking
 from .forms import BookingForm
 from hotel.models import Room
-from django.http.response import Http404, HttpResponse
+from django.http.response import Http404
+from datetime import date, datetime
+import pytz
 
 # Create your views here.
 
@@ -45,8 +47,23 @@ class BookingCreateView(generic.CreateView):
 
 class BookingDetailView(generic.DetailView):
     model = Booking
+    context_object_name = 'booking'
     template_name = 'reservations/bookingdetail.html'
 
 class BookingListView(generic.ListView):
     model = Booking
+    context_object_name = 'bookings'
     template_name = 'reservations/bookinglist.html'
+
+
+class TodayBookingListView(generic.ListView):
+    utc = pytz.UTC
+    template_name = 'reservations/todaybookinglist.html'
+    context_object_name = 'todaybookings'
+    today_start = datetime(date.today().year, date.today().month, date.today().day)
+    today_end = today_start = datetime(date.today().year, date.today().month, date.today().day, 23, 59, 59)
+    today_start_aware = utc.localize(today_start)
+    today_end_aware = utc.localize(today_end)
+    queryset = Booking.objects.filter(bookingfrom__range=(today_start_aware, today_end_aware), bookingconfirm=True)
+
+    
