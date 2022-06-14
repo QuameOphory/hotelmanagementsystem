@@ -10,6 +10,7 @@ from datetime import timedelta, datetime
 from django.db.models.signals import post_save, post_delete
 
 def generateBookingNumber():
+    # TODO: for every day, booking numbers must start
     bookings = Booking.objects.all().order_by('-created_at')
     return generate_number_with_date('B', bookings)
 

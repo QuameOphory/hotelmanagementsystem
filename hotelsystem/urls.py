@@ -21,5 +21,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('rooms/', include('hotel.urls')),
+    path('bookings/', include('reservation.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
