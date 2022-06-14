@@ -28,6 +28,6 @@ class BookingForm(forms.ModelForm):
         bookingby = self.cleaned_data.get('bookingby')
         bookings = Booking.objects.all()
         for booking in bookings:
-            if booking.bookingby == bookingby and booking.bookingis_valid:
+            if all([booking.bookingby == bookingby, booking.bookingis_valid, booking.is_active]):
                 raise forms.ValidationError('This user has already made a booking')
         return bookingby
