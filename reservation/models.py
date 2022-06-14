@@ -25,7 +25,7 @@ class Booking(models.Model):
     bookingfrom = models.DateTimeField(_("From"), default=timezone.now)
     bookingnights = models.PositiveIntegerField(_("Number of Nights"), default=1)
     bookingconfirm = models.BooleanField(_("Booking Confirmed"), null=True, blank=True)
-    # is_active = models.BooleanField(_("Is Active"), default=True)
+    bookingis_valid = models.BooleanField(_("Is Valid"), default=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
     bookingcontent = models.TextField(_("Comment"), blank=True, null=True, help_text='Add any extra Information here')
