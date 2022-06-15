@@ -94,21 +94,58 @@ class TodayBookingListView(generic.ListView):
 #     return render(request, 'rooms/homelist.html', context)
 
 
+# class SearchRoomListView(generic.ListView):
+#     template_name = 'rooms/roomsearch.html'
+#     context_object_name = 'rooms'
+#     queryset = Booking.objects.select_related('bookingroom').all()
 
-class AvailableRoomsListView(generic.ListView):
-    queryset = Room.objects.filter(roomstatus__icontains='v')
-    template_name = 'rooms/homelist.html'
-    context_object_name = 'availablerooms'
+#     # def get_context_data(self, request, **kwargs):
+#     #     context = super().get_context_data(**kwargs)
+#     #     fromdate, todate = request.get('fromdate'), request.get('todate')
+#     #     print('-----------------------------')
+#     #     print(fromdate, todate)
+#     #     print('-----------------------------')
+#     #     return context
 
-    bookings = Booking.objects.filter(
-        Q(bookingstatus = 'Cancel') | Q(bookingstatus = 'Unattended') # same as ~Q(bookingstatus = 'Checkedin)
-    )
-    bookedroomlist = []
-    for booking in bookings:
-        if all([booking.bookingconfirm is not None, booking.bookingconfirm is False]):
-            bookedroomlist.append(booking.bookingroom)
+#     def get_queryset(self):
+#         print('\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+#         print(self.kwargs)
+#         print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n')
+#         qs = super().get_queryset()
+#         fromdate, todate = self.kwargs.get('fromdate'), self.kwargs.get('todate')
+#         print('\n-----------------------------')
+#         print(fromdate, todate)
+#         print('-----------------------------\n')
+#         qs = qs.filter()
+#         return qs
+
+# def search_view(request):
+#     querydates = request.GET
+#     fromdate = querydates.get('fromdate')
+#     todate = querydates.get('todate')
+#     print('\n-----------------------------')
+#     print(fromdate, todate)
+#     print('-----------------------------\n')
+#     qs = Booking.objects.select_related('bookingroom')
+#     qs = qs.filter(
+#         Q(bookingfrom__gt=fromdate),
+#         Q(bookingto__gt=todate)
+#     )
+
+# class AvailableRoomsListView(generic.ListView):
+#     queryset = Room.objects.filter(roomstatus__icontains='v')
+#     template_name = 'rooms/homelist.html'
+#     context_object_name = 'availablerooms'
+
+#     bookings = Booking.objects.filter(
+#         Q(bookingstatus = 'Cancel') | Q(bookingstatus = 'Unattended') # same as ~Q(bookingstatus = 'Checkedin)
+#     )
+#     bookedroomlist = []
+#     for booking in bookings:
+#         if all([booking.bookingconfirm is not None, booking.bookingconfirm is False]):
+#             bookedroomlist.append(booking.bookingroom)
             
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['bookedroomlist'] = self.bookedroomlist
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['bookedroomlist'] = self.bookedroomlist
+#         return context
