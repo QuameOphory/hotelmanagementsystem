@@ -14,6 +14,12 @@ def generateBookingNumber():
     bookings = Booking.objects.all().order_by('-created_at')
     return generate_number_with_date('B', bookings)
 
+BOOKINGSTATUS = [
+    ('Cancel', 'Cancelled'), 
+    ('Checkedin', 'Checked In'),
+    ('Unattended', 'Unattended')
+]
+
 # Create your models here.
 class Booking(models.Model):
     """Model definition for Booking."""
@@ -22,6 +28,7 @@ class Booking(models.Model):
     # TODO: change user model  to client model
     bookingby = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
     bookingroom = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
+    bookingstatus = models.CharField(_("Status"), max_length=50, choices=BOOKINGSTATUS, default='Unattended')
     bookingfrom = models.DateTimeField(_("From"), default=timezone.now)
     bookingnights = models.PositiveIntegerField(_("Number of Nights"), default=1)
     bookingconfirm = models.BooleanField(_("Booking Confirmed"), null=True, blank=True)
@@ -49,10 +56,11 @@ class Booking(models.Model):
 
         verbose_name = 'Booking'
         verbose_name_plural = 'Bookings'
+        ordering = ['-bookingfrom', 'bookingconfirm']
 
     def __str__(self):
         """Unicode representation of Booking."""
-        return str(self.bookingfrom)
+        return f'{self.bookingroom, self.bookingconfirm, self.bookingfrom}'
 
     def get_absolute_url(self):
         return reverse("booking_detail", kwargs={"pk": self.pk})
@@ -71,3 +79,27 @@ def booking_post_save(sender, instance, created, *args, **kwargs):
         instance.bookingroom.save()
 
 post_save.connect(booking_post_save, sender=Booking)
+
+
+class CheckIn(models.Model):
+    """Model definition for CheckIn."""
+
+    # TODO: Define fields here
+    checkinbooking = models.ForeignKey(Booking, verbose_name=_("Booking"), on_delete=models.CASCADE)
+    class Meta:
+        """Meta definition for CheckIn."""
+
+        verbose_name = 'CheckIn'
+        verbose_name_plural = 'CheckIns'
+
+    def __str__(self):
+        """Unicode representation of CheckIn."""
+        pass
+
+def checkin_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        booking = instance.checkinbooking
+        booking.bookingstatus = 'Checkedin'
+        booking.save()
+
+post_save.connect(checkin_post_save, sender=CheckIn)

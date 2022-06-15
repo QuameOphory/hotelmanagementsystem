@@ -1,8 +1,10 @@
 from django.urls import path, include
 from .views import RoomListView, RoomCreateView, RoomDeleteView, RoomDetailView, RoomUpdateView
+from reservation.views import AvailableRoomsListView
 
 urlpatterns = [
     path('', RoomListView.as_view(), name='room_list'),
+    path('available/', AvailableRoomsListView.as_view(), name='room_available'),
     path('add/', RoomCreateView.as_view(), name='room_create'),
     path('<slug>/booking/', include('reservation.urls')),
     path('<slug>/', RoomDetailView.as_view(), name='room_detail'),

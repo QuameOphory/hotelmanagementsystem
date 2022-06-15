@@ -8,6 +8,7 @@ from hotel.models import Room
 from django.http.response import Http404
 from datetime import date, datetime
 import pytz
+from django.db.models import Q
 
 # Create your views here.
 
@@ -77,5 +78,37 @@ class TodayBookingListView(generic.ListView):
 #     fromdate = request.get('date_from')
 #     todate = request.get('to_date')
 
+# def AvailableRoomsListView(request):
+#     rooms = Room.objects.filter(roomstatus__icontains='v')
+#     bookings = Booking.objects.filter(
+#         Q(bookingstatus = 'Cancel') | Q(bookingstatus = 'Unattended') # same as ~Q(bookingstatus = 'Checkedin)
+#     )
+#     bookedroomlist = []
+#     for booking in bookings:
+#         if not booking.bookingconfirm:
+#             bookedroomlist.append(booking.bookingroom)
+#     context = {
+#         'rooms': rooms,
+#         'bookedroomlist': bookedroomlist
+#     }
+#     return render(request, 'rooms/homelist.html', context)
 
-    
+
+
+class AvailableRoomsListView(generic.ListView):
+    queryset = Room.objects.filter(roomstatus__icontains='v')
+    template_name = 'rooms/homelist.html'
+    context_object_name = 'availablerooms'
+
+    bookings = Booking.objects.filter(
+        Q(bookingstatus = 'Cancel') | Q(bookingstatus = 'Unattended') # same as ~Q(bookingstatus = 'Checkedin)
+    )
+    bookedroomlist = []
+    for booking in bookings:
+        if all([booking.bookingconfirm is not None, booking.bookingconfirm is False]):
+            bookedroomlist.append(booking.bookingroom)
+            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bookedroomlist'] = self.bookedroomlist
+        return context
