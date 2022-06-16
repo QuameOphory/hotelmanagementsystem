@@ -88,10 +88,9 @@ class SearchRoomListView(generic.ListView):
     def get_queryset(self):
         try:
             datefrom = self.request.GET['fromdate']
-            if datefrom == '':
-                datefrom = datetime.now()
-            split_date = str(datefrom).split('-')
-            print('-------------------------', split_date)
+            datefrom = datetime.now() if datefrom == '' else datefrom
+            if isinstance(datefrom, str):
+                split_date = str(datefrom).split('-')
             yy, mm, dd = split_date[0], split_date[1], split_date[2]
             datefrom = datetime(int(yy), int(mm), int(dd), 0, 0, 0)
         except KeyError as ke:
@@ -99,17 +98,13 @@ class SearchRoomListView(generic.ListView):
         else:
             try:
                 nights = self.request.GET['nights']
-                if nights == '':
-                    nights = 1
+                nights = 1 if nights == '' else int(nights)
             except KeyError:
                 nights = 1
-            rt = datefrom + timedelta(days=int(nights))
+            rt = datefrom + timedelta(days=nights)
             qs = super().get_queryset()
             qs = qs.exclude(
-                # Q(booking__bookingfrom__gt=datefrom), 
-                # Q(booking__bookingfrom__gte=rt) #|
                 Q(booking__bookingstatus='Checkedin')
-                #Q(booking=None)
             )
             qs = qs.exclude(
                 Q(booking__bookingfrom__lt=datefrom), 
@@ -121,8 +116,4 @@ class SearchRoomListView(generic.ListView):
                 Q(booking__bookingfrom__lt=rt),
                 Q(booking__bookingconfirm=True)
             )
-
-            print('bbbbbbbbbbbbbbbbbbbbbbbbbb')
-            print(qs)
-            print('bbbbbbbbbbbbbbbbbbbbbbbbbb')
             return qs
