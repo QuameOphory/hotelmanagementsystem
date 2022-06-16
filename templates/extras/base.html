@@ -41,19 +41,19 @@
         </nav>
         <!-- NavBar Ends here -->
 
-        {% comment %} <div class="search">
-            <form action="{% url 'room_all' %}" method="get">
+        <div class="search">
+            <form action="{% url 'room_search' %}" method="get">
               <div>
                   <label for="fromdate">Booking From</label>
                   <input type="date" name="fromdate" id="fromdate">
               </div>
               <div>
-                  <label for="todate">Booking From</label>
-                  <input type="date" name="todate" id="todate">
+                  <label for="todate">Number of Nights</label>
+                  <input type="number" name="nights" id="nights">
               </div>
               <input class="btn btn-primary" type="submit" value="Search">
             </form>
-        </div> {% endcomment %}
+        </div>
 
         {% block content %}
             

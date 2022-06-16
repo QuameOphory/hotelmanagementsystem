@@ -6,7 +6,7 @@ from uuid import uuid4
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from number_generator import generate_number_with_date
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from django.db.models.signals import post_save, post_delete
 
 def generateBookingNumber():
@@ -31,6 +31,7 @@ class Booking(models.Model):
     bookingstatus = models.CharField(_("Status"), max_length=50, choices=BOOKINGSTATUS, default='Unattended')
     bookingfrom = models.DateTimeField(_("From"), default=timezone.now)
     bookingnights = models.PositiveIntegerField(_("Number of Nights"), default=1)
+    bookingTo = models.DateTimeField(_("To"), default=timezone.now)
     bookingconfirm = models.BooleanField(_("Booking Confirmed"), null=True, blank=True)
     bookingis_valid = models.BooleanField(_("Is Valid"), default=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
@@ -39,7 +40,8 @@ class Booking(models.Model):
 
     @property
     def bookingto(self):
-        return self.bookingfrom + timedelta(days=self.bookingnights)
+        bt = self.bookingfrom + timedelta(days=self.bookingnights)
+        return bt
 
     @property
     def is_active(self):
