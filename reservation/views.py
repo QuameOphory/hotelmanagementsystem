@@ -71,7 +71,7 @@ class TodayBookingListView(generic.ListView):
     today_end = today_start = datetime(date.today().year, date.today().month, date.today().day, 23, 59, 59)
     today_start_aware = utc.localize(today_start)
     today_end_aware = utc.localize(today_end)
-    queryset = Booking.objects.filter(bookingfrom__range=(today_start_aware, today_end_aware), bookingconfirm=True)
+    queryset = Booking.objects.filter(bookingfrom__range=(today_start_aware, today_end_aware), bookingconfirm=True).select_related('bookingroom')
 
 
 class AvailableRoomsListView(generic.ListView):
