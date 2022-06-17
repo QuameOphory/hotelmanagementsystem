@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from number_generator import generate_number_with_date
 from datetime import timedelta, datetime, date
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
 import pytz
@@ -34,7 +35,7 @@ class Booking(models.Model):
     # TODO: add validations for past dates
     bookingnumber = models.CharField(_("Booking Number"), max_length=120, default=generateBookingNumber)
     # TODO: change user model  to client model
-    bookingby = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
+    bookingby = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE, default=get_user_model())
     bookingroom = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
     # TODO: auto up
     bookingstatus = models.CharField(_("Status"), max_length=50, choices=BOOKINGSTATUS, default='Unattended')

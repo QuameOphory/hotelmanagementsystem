@@ -18,6 +18,7 @@ class BookingCreateView(generic.CreateView):
 
     def get(self, request, *args, **kwargs):
         form = self.get_form_class()
+        form = form()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -76,6 +77,9 @@ class AvailableRoomsListView(generic.ListView):
         qs = qs.exclude(
             Q(booking__bookingconfirm=True) |
             Q(booking__bookingstatus='Checkedin')
+        )
+        qs = qs.exclude(
+            booking__bookingto__gt=datetime.now()
         )
         return qs
 
