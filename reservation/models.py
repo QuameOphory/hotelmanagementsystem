@@ -7,7 +7,9 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from number_generator import generate_number_with_date
 from datetime import timedelta, datetime, date
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
+import pytz
 
 def generateBookingNumber():
     # TODO: for every day, booking numbers must start
@@ -17,8 +19,14 @@ def generateBookingNumber():
 BOOKINGSTATUS = [
     ('Cancel', 'Cancelled'), 
     ('Checkedin', 'Checked In'),
-    ('Unattended', 'Unattended')
+    ('Unattended', 'Unattended'),
+    ('Expired', '')
 ]
+
+utc = pytz.UTC
+def validate_bookingfrom(value):
+    if value < utc.localize(datetime.now()):
+        raise ValidationError(_('You are trying to book a room with a past date.'))
 
 # Create your models here.
 class Booking(models.Model):
@@ -28,20 +36,15 @@ class Booking(models.Model):
     # TODO: change user model  to client model
     bookingby = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
     bookingroom = models.ForeignKey(Room, verbose_name=_("Room"), on_delete=models.CASCADE)
+    # TODO: auto up
     bookingstatus = models.CharField(_("Status"), max_length=50, choices=BOOKINGSTATUS, default='Unattended')
-    bookingfrom = models.DateTimeField(_("From"), default=timezone.now)
+    bookingfrom = models.DateTimeField(_("From"), default=timezone.now, validators=[validate_bookingfrom])
     bookingnights = models.PositiveIntegerField(_("Number of Nights"), default=1)
-    bookingTo = models.DateTimeField(_("To"), default=timezone.now)
+    bookingto = models.DateTimeField(_("To"), blank=True)
     bookingconfirm = models.BooleanField(_("Booking Confirmed"), null=True, blank=True)
-    bookingis_valid = models.BooleanField(_("Is Valid"), default=True)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
     bookingcontent = models.TextField(_("Comment"), blank=True, null=True, help_text='Add any extra Information here')
-
-    @property
-    def bookingto(self):
-        bt = self.bookingfrom + timedelta(days=self.bookingnights)
-        return bt
 
     @property
     def is_active(self):
@@ -50,8 +53,11 @@ class Booking(models.Model):
         return True
 
     @property
-    def release_room(self):
-        pass
+    def is_valid(self):
+        if all([self.bookingstatus=='Checkedin', self.bookingfrom <= self.bookingTo]):
+            return True
+        return False
+
 
     class Meta:
         """Meta definition for Booking."""
@@ -105,3 +111,4 @@ def checkin_post_save(sender, instance, created, *args, **kwargs):
         booking.save()
 
 post_save.connect(checkin_post_save, sender=CheckIn)
+

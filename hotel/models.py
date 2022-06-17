@@ -78,7 +78,7 @@ class Room(models.Model):
     roomdimension = models.DecimalField(_("Dimension (in Square Feet)"), max_digits=5, decimal_places=2)
     roomextras = models.ManyToManyField(RoomExtra, verbose_name=_("List of Extra Items"))
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
-    last_updated = models.DateTimeField(_("Updated At"), auto_now=False)
+    last_updated = models.DateTimeField(_("Updated At"), auto_now=True)
     is_available = models.BooleanField(_("Room Available"), default=True)
     roomdate = models.DateTimeField(_("Empty Date Field"), blank=True, null=True)
 

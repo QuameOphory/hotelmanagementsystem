@@ -75,5 +75,34 @@
         <a href="{% url 'room_delete' room.roomnumber_url %}"><button class="btn btn-danger">Delete Room</button></a>
         <a href="{% url 'booking_create' room.roomnumber_url %}"><button class="btn btn-dark">Book This Room</button></a>
     </div>
+    {% if bookings is not None %}
+      <div class="bookingstable">
+        <div class="bookingtitle">
+          <h1>Booking Details</h1>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Booking Number</th>
+              <th>Client</th>
+              <th>Booked From</th>
+              <th>Booked To</th>
+              <th>Booking Confirmed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in bookings %}
+              <tr>
+                <td>{{ booking.bookingnumber }}</td>
+                <td>{{ booking.bookingby }}</td>
+                <td>{{ booking.bookingfrom }}</td>
+                <td>{{ booking.bookingto }}</td>
+                <td>{{ booking.bookingconfirm }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
     {% comment %} room.roomnumber_url  {% endcomment %}
 {% endblock content %}

@@ -36,6 +36,16 @@ class RoomDetailView(generic.DetailView):
     context_object_name = 'room'
     template_name = 'rooms/roomdetail.html'
 
+    
+    def get_context_data(self, **kwargs):
+        context = super(RoomDetailView, self).get_context_data(**kwargs)
+        room = self.get_object()
+        bookings = room.booking_set.all()
+        if bookings:
+            context['bookings'] = bookings
+            return context
+        return context
+
 
 class RoomDeleteView(generic.DeleteView):
     model = Room
