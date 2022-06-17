@@ -113,7 +113,7 @@ class SearchRoomListView(generic.ListView):
             qs = qs.exclude(
                 Q(booking__bookingfrom__lt=datefrom), 
                 Q(booking__bookingconfirm=True), 
-                Q(booking__bookingTo__gt=datefrom)
+                Q(booking__bookingto__gt=datefrom)
             )
             qs = qs.exclude(
                 Q(booking__bookingfrom__gt=datefrom),
