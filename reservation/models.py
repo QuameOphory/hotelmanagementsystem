@@ -9,7 +9,7 @@ from number_generator import generate_number_with_date
 from datetime import timedelta, datetime, date
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 import pytz
 
 def generateBookingNumber():
@@ -80,6 +80,12 @@ def booking_post_delete(sender, instance, *args, **kwargs):
     instance.bookingroom.save()
 
 post_delete.connect(booking_post_delete, sender=Booking)
+
+def booking_pre_save(sender, instance, *args, **kwargs):
+    if instance.bookingto is None:
+        instance.bookingto = instance.bookingfrom + timedelta(days=instance.bookingnights)
+
+pre_save.connect(booking_pre_save, sender=Booking)
 
 def booking_post_save(sender, instance, created, *args, **kwargs):
     if created:
