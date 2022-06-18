@@ -95,8 +95,8 @@ class SearchRoomListView(generic.ListView):
             datefrom = datetime.now() if datefrom == '' else datefrom
             if isinstance(datefrom, str):
                 split_date = str(datefrom).split('-')
-            yy, mm, dd = split_date[0], split_date[1], split_date[2]
-            datefrom = datetime(int(yy), int(mm), int(dd), 0, 0, 0)
+                yy, mm, dd = split_date[0], split_date[1], split_date[2]
+                datefrom = datetime(int(yy), int(mm), int(dd), 0, 0, 0)
         except KeyError as ke:
             datefrom = datetime.now()
         else:
